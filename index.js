@@ -17,6 +17,11 @@ app.get('/hello', (req, res)=>{
     res.send('this is hello')
 })
 
+app.get('/helloJi', (req, res)=>{
+
+    res.send('this is hello')
+})
+
 app.listen(PORT,()=>{
     console.log('server is running on port 8000')
 });
