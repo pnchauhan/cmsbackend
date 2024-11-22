@@ -1,4 +1,4 @@
-class ApiResponce{
+class ApiResponse{
 
     constructor(statusCode, data, message="succes"){
         this.statusCode=statusCode
@@ -8,3 +8,5 @@ class ApiResponce{
 
     }
 }
+
+export { ApiResponse}
