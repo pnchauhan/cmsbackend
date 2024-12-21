@@ -2,12 +2,13 @@ import {asyncHandler} from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/apiError.js";
 import {User} from "../models/user.model.js";
 import {uploadOnCloudinary} from "../utils/cloudinary.js";
-import {ApiResponse} from "../utils/apiResponce.js"
+import {ApiResponse} from "../utils/apiResponse.js";
 
 const registerUser=asyncHandler( async(req, res)=>{
 
     const { fullName, username, email, password } = req.body;
-   
+
+    
     if(
         [fullName, username, email, password].some((field)=>field?.trim()==="")
     ){
@@ -20,16 +21,17 @@ const registerUser=asyncHandler( async(req, res)=>{
     })
 
     if(existedUser){
-        throw new ApiError(409, "user already exist")
+       
+       throw new ApiError(409, "user already exist")
         
     }
   
     
-    const avatarLocalPath = req.files?.avatar[0]?.path;
+    const avatarLocalPath =req.files?.avatar[0]?.path;
  
     let coverImageLocalPath;
     if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
-        coverImageLocalPath = req.files.coverImage[0].path
+        coverImageLocalPath =req.files.coverImage[0].path
     }
 
     if (!avatarLocalPath) {
@@ -42,12 +44,12 @@ const registerUser=asyncHandler( async(req, res)=>{
     if(!avatarUrl){
         throw new ApiError(409, "avatar imageis require")
     }
+ 
    
-
     const user = await User.create({
         fullName,
-        avatar: avatarUrl?.url ?? "rerer",
-        coverImage: coverImageUrl.url ?? "rere",
+        avatar: avatarUrl?.url ?? "",
+        coverImage: coverImageUrl.url ?? "",
         email,
         password,
         username: username.toLowerCase()
@@ -60,13 +62,25 @@ const registerUser=asyncHandler( async(req, res)=>{
         
     }
 
-    return res.send(201)
-    .json(
-        new ApiResponse(200,[{daata:{id:1, name:"esting"}}], 'user created successfully')
-       )
+    return res.send(201).json(
+        new ApiResponse(200, createdUser, "User registered Successfully")
+    )
+
+})
+
+const loginUser= asyncHandler(async(req, res)=>{
+
+    const { email, username, password} = req.body;
+
+    if(username=="" ?? password==""){
+    return res.status(200).json({ status:"fail", message:"Fild are requred", data:[]})
+    }
+
 
 })
 
 export{
-         registerUser
-      }
+    registerUser,
+    loginUser
+}
+
