@@ -1,1 +1,1 @@
-export const DB_NAME="cms"
+export const DB_NAME = "cms"
